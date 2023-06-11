@@ -1,3 +1,6 @@
+/*import {createPhotosMarkup} from "./photosMarkup";*/
+
+
 const descriptions = [
   'Хто зна коли вже в крипті бичка почнеться? пишіть в лс!',
   'Огооо!це шо за фільтр',
@@ -68,11 +71,10 @@ const publications = new Array(publicationsCount).fill(null).map((_, i) => ({
   url: `photos/${i + 1}.jpg`,
   description: descriptions[i],
   likes: getRandomNumber(likesCount["min"], likesCount["max"]),
-  comments: JSON.stringify(createComments())
+  comments: createComments(+getRandomNumber(commentsCount["min"], commentsCount["max"]))
 }))
 
-function createComments() {
-  const count = getRandomNumber(commentsCount["min"], commentsCount["max"])//??
+function createComments(count) {
   let id = 1;
   return new Array(count).fill(null).map(() => ({
     id: id++,
@@ -82,5 +84,19 @@ function createComments() {
   }))
 }
 
-console.log(publications)
+let photoTemplate = document.querySelector('#picture')
+let picturesSection = document.querySelector('.pictures')
 
+export function createPhotosMarkup(postsObg) {
+  let photosFragment = document.createDocumentFragment()
+  postsObg.forEach(post => {
+    let clonedPhotoTemplate = photoTemplate.content.cloneNode(true);
+    clonedPhotoTemplate.querySelector('.picture__img').src = post.url;
+    clonedPhotoTemplate.querySelector('.picture__comments').innerText = post.comments.length
+    clonedPhotoTemplate.querySelector('.picture__likes').innerText = post.likes
+    photosFragment.appendChild(clonedPhotoTemplate)
+  })
+  picturesSection.appendChild(photosFragment)
+}
+
+createPhotosMarkup(publications)
