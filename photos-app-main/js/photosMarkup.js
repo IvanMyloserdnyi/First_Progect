@@ -1,8 +1,8 @@
-/*
-let photoTemplate = document.querySelector('#picture')
-let picturesSection = document.querySelector('.pictures')
 
 export function createPhotosMarkup(postsObg) {
+  let photoTemplate = document.querySelector('#picture')
+  let picturesSection = document.querySelector('.pictures')
+
   let photosFragment = document.createDocumentFragment()
   postsObg.forEach(post => {
     let clonedPhotoTemplate = photoTemplate.content.cloneNode(true);
@@ -14,4 +14,3 @@ export function createPhotosMarkup(postsObg) {
   picturesSection.appendChild(photosFragment)
 }
 
-*/
