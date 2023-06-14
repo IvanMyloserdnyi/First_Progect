@@ -1,3 +1,6 @@
+import {createPhotosMarkup} from "./photosMarkup.js";
+
+
 const descriptions = [
   'Хто зна коли вже в крипті бичка почнеться? пишіть в лс!',
   'Огооо!це шо за фільтр',
@@ -67,20 +70,18 @@ const publications = new Array(publicationsCount).fill(null).map((_, i) => ({
   id: i + 1,
   url: `photos/${i + 1}.jpg`,
   description: descriptions[i],
-  likes: getRandomNumber(likesCount["min"], likesCount["max"]),
-  comments: JSON.stringify(createComments())
+  likes: getRandomNumber(likesCount.min, likesCount.max),
+  comments: createComments(+getRandomNumber(commentsCount.min, commentsCount.max))
 }))
 
-function createComments() {
-  const count = getRandomNumber(commentsCount["min"], commentsCount["max"])//??
+function createComments(count) {
   let id = 1;
   return new Array(count).fill(null).map(() => ({
     id: id++,
-    avatar: `img/avatar-${getRandomNumber(photosCount["min"], photosCount["max"])}.svg`,
+    avatar: `img/avatar-${getRandomNumber(photosCount.min, photosCount.max)}.svg`,
     message: comments[getRandomNumber(0, comments.length - 1)],
     name: names[getRandomNumber(0, names.length - 1)]
   }))
 }
 
-console.log(publications)
-
+createPhotosMarkup(publications)
