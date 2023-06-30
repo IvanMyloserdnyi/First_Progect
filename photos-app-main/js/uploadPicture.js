@@ -1,0 +1,21 @@
+
+export function uploadPictureSectionOpen(uploadPictureSection,body) {
+  body.classList.add('modal-open');
+  uploadPictureSection.classList.remove('hidden')
+}
+export function uploadPictureSectionClose(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags) {
+  if(
+    (evt.key === 'Escape' && document.activeElement === imgUploadDescription)||
+    (evt.key=== 'Escape' && document.activeElement === imgUploadHashtags)
+    ) {
+    evt.preventDefault();
+  }
+  else if(
+    evt.key ==='Escape' && !uploadPictureSection.classList.contains('hidden')||
+    evt.target.id === 'upload-cancel'
+  ) {
+    imgUploadForm.reset();
+    uploadPictureSection.classList.add('hidden');
+    body.classList.remove('modal-open');
+  }
+}

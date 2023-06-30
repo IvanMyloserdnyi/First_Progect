@@ -10,9 +10,6 @@ export function showBigPicture(evt,targetPublication,bigPicture,body,bigPictureI
     targetCommentsCount.innerText = targetPublication.comments.length;
     createCommentsMarkup(targetPublication.comments,commentTemplate,commentsSection,commentsFragment)
   }
-  else {
-    alert('Help')
-  }
 }
 
 export function createCommentsMarkup(commentsObg,commentTemplate,commentsSection,commentsFragment) {

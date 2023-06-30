@@ -82,3 +82,18 @@ export const targetCommentsCount = document.querySelector('.comments-count');
 export const commentTemplate = document.querySelector('#social__comment');
 export const commentsSection = document.querySelector('.social__comments');
 export const commentsFragment = document.createDocumentFragment();
+
+export const uploadPictureSection = document.querySelector('.img-upload__overlay');
+export const imgUploadForm = document.querySelector('.img-upload__form');
+export const imgUploadDescription = imgUploadForm.querySelector('.text__description');
+export const imgUploadHashtags = imgUploadForm.querySelector('.text__hashtags');
+export const validationMessages = {
+  firstMessage: 'Кількісь хештегів повинно бути не більше 5',
+  secondMessage: 'Хештеги повинні бути різними',
+  thirdMessage: 'Першим символом має бути #',
+  fourthMessage: 'Довжина одного хештега повинна бути менше 20 символів',
+  fifthMessage: 'Введіть тільки цифри і букви'
+};
+export const hashTagsInput = document.querySelector('.text__hashtags');
+export const hashTagsInputValue = hashTagsInput.value.toLowerCase();
+export const spacedArray = hashTagsInputValue.split(' ');
