@@ -96,4 +96,8 @@ export const validationMessages = {
 };
 export const hashTagsInput = document.querySelector('.text__hashtags');
 export const hashTagsInputValue = hashTagsInput.value.toLowerCase();
-export const spacedArray = hashTagsInputValue.split(' ');
+
+
+export const commentsLoader = document.querySelector('.social__comments-loader ');
+export  const commentsShown = document.querySelector('.comments-shown');
+

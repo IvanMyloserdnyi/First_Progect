@@ -21,3 +21,12 @@ export function hasDuplicates(spacedArray) {
 export function isValidHashtag(elem) {
   return /^#[A-Za-z0-9а-яА-ЯІіЄєЇї]+$/u.test(elem)
 }
+export function getServerData(url) {
+  return fetch(url)
+    .then((response) => response.json())
+    .then((json) => json)
+    .catch((error) => {
+      console.log(error)
+      alert('Help')
+    })
+}

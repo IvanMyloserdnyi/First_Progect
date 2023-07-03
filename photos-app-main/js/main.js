@@ -1,14 +1,14 @@
 import {createPhotosMarkup} from "./photosMarkup.js";
 import {removeBigPicture, showBigPicture} from "./bigPicture.js";
-import {getTargetPublication, hasDuplicates, isValidHashtag} from "./utils.js";
+import {getServerData, getTargetPublication, hasDuplicates, isValidHashtag} from "./utils.js";
 import {
   bigPicture,
   bigPictureImg,
   bigPictureImgDescription,
   body,
   commentsCounter,
-  commentsFragment,
-  commentsSection,
+  commentsFragment, commentsLoader,
+  commentsSection, commentsShown,
   commentTemplate, hashTagsInput,
   imgUploadDescription,
   imgUploadForm, imgUploadHashtags,
@@ -20,23 +20,43 @@ import {
   targetLikesCount,
   uploadPictureSection, validationMessages
 } from "./consts.js";
-import {uploadPictureSectionClose, uploadPictureSectionOpen} from "./uploadPicture.js";
+import {removeUploadPictureSection, addUploadPictureSection} from "./uploadPicture.js";
 import {formValidation} from "./validation.js";
 
-createPhotosMarkup(publications,photoTemplate,picturesSection,photosFragment)
+
+const photosUrl = `http://127.0.0.1:4001/photos`
+const photos = await getServerData(photosUrl)
+createPhotosMarkup(photos,photoTemplate,picturesSection,photosFragment)
+const commentsUrl = `http://127.0.0.1:4001/comments`
+const comments = await getServerData(commentsUrl)
 picturesSection.addEventListener('click',(evt) => {
-  showBigPicture(evt,getTargetPublication(evt,publications),bigPicture,body,bigPictureImg,bigPictureImgDescription,targetLikesCount,commentsCounter,targetCommentsCount,commentTemplate,commentsSection,commentsFragment)
+  const bigOptions = {
+    bigPicture,
+    body,
+    bigPictureImg,
+    bigPictureImgDescription,
+    targetLikesCount,
+    commentsCounter,
+    targetCommentsCount,
+    commentTemplate,
+    commentsSection,
+    commentsFragment,
+    targetPublication: getTargetPublication(evt,comments),
+    commentsShown,
+    commentsLoader
+  }
+  showBigPicture(evt,bigOptions)
 })
 //getTargetPublication(evt,publications)??
-bigPicture.addEventListener('click',(evt) => removeBigPicture(evt,body,bigPicture))
-document.addEventListener('keydown',(evt) => removeBigPicture(evt,body,bigPicture))
+bigPicture.addEventListener('click',(evt) => removeBigPicture(evt,body,bigPicture,commentsLoader))
+document.addEventListener('keydown',(evt) => removeBigPicture(evt,body,bigPicture,commentsLoader))
 
 const imgUploadButton = document.querySelector('#upload-file');
 const imgUploadSection = document.querySelector('.img-upload__overlay');
 const formSubmitButton = document.querySelector('.img-upload__submit');
 
-imgUploadButton.addEventListener('click',(evt) =>uploadPictureSectionOpen(uploadPictureSection,body));
-imgUploadSection.addEventListener('click',(evt) => uploadPictureSectionClose(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
-body.addEventListener('keydown',(evt) => uploadPictureSectionClose(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
+imgUploadButton.addEventListener('click',(evt) =>addUploadPictureSection(uploadPictureSection,body));
+imgUploadSection.addEventListener('click',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
+body.addEventListener('keydown',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
 formSubmitButton.addEventListener('click',(evt) =>formValidation(validationMessages,hashTagsInput,hasDuplicates,isValidHashtag))
 //['click','keydown'].forEach(e => bigPicture.addEventListener(e,removeBigPicture))
