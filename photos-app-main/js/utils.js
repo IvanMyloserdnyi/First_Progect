@@ -15,3 +15,9 @@ export function createComments(count,photosCount,comments,names) {
     name: names[getRandomNumber(0, names.length - 1)]
   }))
 }
+export function hasDuplicates(spacedArray) {
+  return spacedArray.some((value,index) =>spacedArray.indexOf(value) !== index);
+}
+export function isValidHashtag(elem) {
+  return /^#[A-Za-z0-9а-яА-ЯІіЄєЇї]+$/u.test(elem)
+}
