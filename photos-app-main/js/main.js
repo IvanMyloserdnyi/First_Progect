@@ -1,35 +1,41 @@
 import {createPhotosMarkup} from "./photosMarkup.js";
 import {removeBigPicture, showBigPicture} from "./bigPicture.js";
-import {getServerData, getTargetPublication, hasDuplicates, isValidHashtag} from "./utils.js";
+import {
+  createPublications, getRandomComments,
+  getRandomNumber,
+  getServerData,
+  getTargetPublication,
+  hasDuplicates,
+  isValidHashtag
+} from "./utils.js";
 import {
   bigPicture,
   bigPictureImg,
   bigPictureImgDescription,
-  body,
+  body, commentsCount,
   commentsCounter,
   commentsFragment, commentsLoader,
-  commentsSection, commentsShown,
+  commentsSection, commentsShown, commentsUrl,
   commentTemplate, hashTagsInput,
   imgUploadDescription,
   imgUploadForm, imgUploadHashtags,
-  photosFragment,
+  photosFragment, photosUrl,
   photoTemplate,
   picturesSection,
-  publications,
   targetCommentsCount,
   targetLikesCount,
   uploadPictureSection, validationMessages
 } from "./consts.js";
 import {removeUploadPictureSection, addUploadPictureSection} from "./uploadPicture.js";
 import {formValidation} from "./validation.js";
+import {getPhotosEffects} from "./uploadPictureEffects.js";
 
 
-const photosUrl = `http://127.0.0.1:4001/photos`
-const photos = await getServerData(photosUrl)
-createPhotosMarkup(photos,photoTemplate,picturesSection,photosFragment)
-const commentsUrl = `http://127.0.0.1:4001/comments`
-const comments = await getServerData(commentsUrl)
+
+const publications = await createPublications(photosUrl,commentsUrl,commentsCount,getRandomComments,getRandomNumber,getServerData)
+createPhotosMarkup(publications,photoTemplate,picturesSection,photosFragment)
 picturesSection.addEventListener('click',(evt) => {
+
   const bigOptions = {
     bigPicture,
     body,
@@ -41,9 +47,9 @@ picturesSection.addEventListener('click',(evt) => {
     commentTemplate,
     commentsSection,
     commentsFragment,
-    targetPublication: getTargetPublication(evt,comments),
     commentsShown,
-    commentsLoader
+    commentsLoader,
+    targetPublication: getTargetPublication(evt,publications)
   }
   showBigPicture(evt,bigOptions)
 })
@@ -60,3 +66,4 @@ imgUploadSection.addEventListener('click',(evt) => removeUploadPictureSection(ev
 body.addEventListener('keydown',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
 formSubmitButton.addEventListener('click',(evt) =>formValidation(validationMessages,hashTagsInput,hasDuplicates,isValidHashtag))
 //['click','keydown'].forEach(e => bigPicture.addEventListener(e,removeBigPicture))
+getPhotosEffects()

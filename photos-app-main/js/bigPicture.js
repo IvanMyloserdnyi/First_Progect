@@ -11,28 +11,29 @@ export function showBigPicture(evt,data) {
     bigPictureImg.src = targetPublication.url;
     bigPictureImgDescription.innerText = targetPublication.description;
     targetLikesCount.innerText = targetPublication.likes;
-    commentsCounter.classList.add('hidden');
     targetCommentsCount.innerText = targetPublication.comments.length;
     showComments(targetPublication,commentsCounter,commentTemplate,commentsSection,commentsFragment,commentsShown,commentsLoader)
   }
 }
 function showComments(targetPublication,commentsCounter,commentTemplate,commentsSection,commentsFragment,commentsShown,commentsLoader) {
   const comments = targetPublication.comments;
+  let range = 5
+
   if(comments.length>5) {
-    commentsCounter.classList.remove('hidden');
-    let range = 5
     commentsLoader.addEventListener('click', () =>{
-      range +=5
+      range +=5;
       createCommentsMarkup(comments.slice(0,range),commentTemplate,commentsSection,commentsFragment,commentsShown);
       if (range >= comments.length) {
         commentsLoader.classList.add('hidden')
+        range = 5
       }
     })
     createCommentsMarkup(comments.slice(0,range),commentTemplate,commentsSection,commentsFragment,commentsShown)
   }
   else {
-    createCommentsMarkup(targetPublication.comments,commentTemplate,commentsSection,commentsFragment,commentsShown)
+    commentsCounter.classList.add('hidden');
     commentsLoader.classList.add('hidden')
+    createCommentsMarkup(targetPublication.comments,commentTemplate,commentsSection,commentsFragment,commentsShown)
   }
 }
 function removeCommentsLoader(commentsLoader) {
