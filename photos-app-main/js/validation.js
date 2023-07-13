@@ -1,6 +1,6 @@
-import {postData, uploadData} from "./uploadPhoto.js";
 
-export function formValidation(validationMessages, hashTagsInput, hasDuplicates, isValidHashtag) {
+
+export function formValidation(validationMessages, hashTagsInput, hasDuplicates, isValidHashtag,postData,uploadData) {
   const hashTagsInputValue = hashTagsInput.value.toLowerCase();
   const spacedArray = hashTagsInputValue.split(' ');
   const postUrl = 'http://127.0.0.1:4001/photos'
@@ -29,6 +29,7 @@ export function formValidation(validationMessages, hashTagsInput, hasDuplicates,
             hashTagsInput.reportValidity();
 
             postData(postUrl, uploadData.uploadPhotoSrc)
+            console.log(uploadData.uploadPhotoSrc)
           }
         }
       })
@@ -36,5 +37,6 @@ export function formValidation(validationMessages, hashTagsInput, hasDuplicates,
   }
   else {
     postData(postUrl, uploadData.uploadPhotoSrc)
+    console.log(uploadData.uploadPhotoSrc)
   }
 }

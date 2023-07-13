@@ -39,6 +39,7 @@ export function postData(url,file)  {
       console.log(responseText);
     })
     .catch((error) => {
+      showUploadMessageResult('fail')
       console.error(error);
     });
 }
@@ -50,7 +51,7 @@ export function showUploadMessageResult(result) {
   clonedMessageTemplate.querySelector('div').setAttribute('data-id','upload_Message')
   body.appendChild(clonedMessageTemplate)
   body.addEventListener('click', (evt) =>removeUploadMessageResult(evt,body))
-  body.addEventListener('keydown', (evt) => removeUploadMessageResult(evt,body))
+  //body.addEventListener('keydown', (evt) => removeUploadMessageResult(evt,body))
 }
 export function removeUploadMessageResult(evt,body) {
   if(evt.target.type === 'button'||evt.target.dataset.id === undefined) {
