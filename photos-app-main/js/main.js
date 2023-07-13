@@ -6,7 +6,7 @@ import {
   getServerData,
   getTargetPublication,
   hasDuplicates,
-  isValidHashtag
+  isValidHashtag, removeMarkup
 } from "./utils.js";
 import {
   bigPicture,
@@ -16,9 +16,9 @@ import {
   commentsCounter,
   commentsFragment, commentsLoader,
   commentsSection, commentsShown, commentsUrl,
-  commentTemplate, hashTagsInput,
+  commentTemplate, formSubmitButton, hashTagsInput, imgUploadButton,
   imgUploadDescription,
-  imgUploadForm, imgUploadHashtags,
+  imgUploadForm, imgUploadHashtags, imgUploadSection,
   photosFragment, photosUrl,
   photoTemplate,
   picturesSection,
@@ -26,9 +26,11 @@ import {
   targetLikesCount,
   uploadPictureSection, validationMessages
 } from "./consts.js";
-import {removeUploadPictureSection, addUploadPictureSection} from "./uploadPicture.js";
+import {removeUploadPictureSection, addUploadPictureSection} from "./uploadPictureSection.js";
 import {formValidation} from "./validation.js";
-import {getPhotosEffects} from "./uploadPictureEffects.js";
+import {getPhotosEffects, resetPictureFilter} from "./uploadPictureEffects.js";
+import {getUploadPhoto} from "./uploadPhoto.js";
+import {imgFilters} from "./imgFilters.js";
 
 
 
@@ -49,21 +51,59 @@ picturesSection.addEventListener('click',(evt) => {
     commentsFragment,
     commentsShown,
     commentsLoader,
-    targetPublication: getTargetPublication(evt,publications)
+    targetPublication: getTargetPublication(evt,publications),
+    removeMarkup
   }
   showBigPicture(evt,bigOptions)
 })
 //getTargetPublication(evt,publications)??
 bigPicture.addEventListener('click',(evt) => removeBigPicture(evt,body,bigPicture,commentsLoader))
 document.addEventListener('keydown',(evt) => removeBigPicture(evt,body,bigPicture,commentsLoader))
+imgUploadButton.addEventListener('click',() =>addUploadPictureSection(uploadPictureSection,body));
 
-const imgUploadButton = document.querySelector('#upload-file');
-const imgUploadSection = document.querySelector('.img-upload__overlay');
-const formSubmitButton = document.querySelector('.img-upload__submit');
+imgUploadSection.addEventListener('click',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags,resetPictureFilter));
+body.addEventListener('keydown',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags,resetPictureFilter));
 
-imgUploadButton.addEventListener('click',(evt) =>addUploadPictureSection(uploadPictureSection,body));
-imgUploadSection.addEventListener('click',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
-body.addEventListener('keydown',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags));
-formSubmitButton.addEventListener('click',(evt) =>formValidation(validationMessages,hashTagsInput,hasDuplicates,isValidHashtag))
+
+imgUploadForm.addEventListener("submit", e => {
+  e.preventDefault();
+  resetPictureFilter()
+  imgUploadForm.reset()
+})
+formSubmitButton.addEventListener('click',async () =>{
+  formValidation(validationMessages,hashTagsInput,hasDuplicates,isValidHashtag)
+  imgUploadSection.classList.add('hidden')
+})
 //['click','keydown'].forEach(e => bigPicture.addEventListener(e,removeBigPicture))
 getPhotosEffects()
+
+
+
+const uploadFile = document.querySelector('#upload-file')
+uploadFile.addEventListener('change', async (evt) => {
+  getUploadPhoto(evt)
+});
+
+
+
+imgFilters(publications,createPhotosMarkup,photoTemplate,picturesSection,photosFragment,removeMarkup)
+
+/*function debounce(func, wait, immediate) {
+  let timeout;
+  return function executedFunction() {
+    const context = this;
+    const args = arguments;
+    const later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}
+function saveInput(){
+  console.log('AAAAAAAAAAAAAA');
+}
+debounce(() => saveInput(),500);*/

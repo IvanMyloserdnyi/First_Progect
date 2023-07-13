@@ -39,3 +39,11 @@ export function getServerData(url) {
       alert('Help')
     })
 }
+export function removeMarkup(removedArea) {
+  while (removedArea.lastChild) {
+    if(removedArea.lastChild.className === 'img-upload') {
+      break
+    }
+    removedArea.removeChild(removedArea.lastChild);
+  }
+}
