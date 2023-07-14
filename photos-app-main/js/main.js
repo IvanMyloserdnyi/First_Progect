@@ -28,9 +28,9 @@ import {
 } from "./consts.js";
 import {removeUploadPictureSection, addUploadPictureSection} from "./uploadPictureSection.js";
 import {formValidation} from "./validation.js";
-import {getPhotosEffects, resetPictureFilter} from "./uploadPictureEffects.js";
-import {getUploadPhoto} from "./uploadPhoto.js";
-import {imgFilters} from "./imgFilters.js";
+import {getPhotosEffects, resetPictureFilter, resetImageScale} from "./uploadPictureEffects.js";
+import {getUploadPhoto, postData, uploadData} from "./uploadPhoto.js";
+import {imgSort} from "./imgSort.js";
 
 
 
@@ -61,17 +61,18 @@ bigPicture.addEventListener('click',(evt) => removeBigPicture(evt,body,bigPictur
 document.addEventListener('keydown',(evt) => removeBigPicture(evt,body,bigPicture,commentsLoader))
 imgUploadButton.addEventListener('click',() =>addUploadPictureSection(uploadPictureSection,body));
 
-imgUploadSection.addEventListener('click',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags,resetPictureFilter));
-body.addEventListener('keydown',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags,resetPictureFilter));
+imgUploadSection.addEventListener('click',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags,resetPictureFilter,resetImageScale));
+body.addEventListener('keydown',(evt) => removeUploadPictureSection(evt,uploadPictureSection,body,imgUploadForm,imgUploadDescription,imgUploadHashtags,resetPictureFilter,resetImageScale));
 
 
 imgUploadForm.addEventListener("submit", e => {
   e.preventDefault();
-  resetPictureFilter()
-  imgUploadForm.reset()
+  resetPictureFilter();
+  resetImageScale()
+  imgUploadForm.reset();
 })
 formSubmitButton.addEventListener('click',async () =>{
-  formValidation(validationMessages,hashTagsInput,hasDuplicates,isValidHashtag)
+  formValidation(validationMessages,hashTagsInput,hasDuplicates,isValidHashtag,postData,uploadData)
   imgUploadSection.classList.add('hidden')
 })
 //['click','keydown'].forEach(e => bigPicture.addEventListener(e,removeBigPicture))
@@ -86,7 +87,7 @@ uploadFile.addEventListener('change', async (evt) => {
 
 
 
-imgFilters(publications,createPhotosMarkup,photoTemplate,picturesSection,photosFragment,removeMarkup)
+imgSort(publications,createPhotosMarkup,photoTemplate,picturesSection,photosFragment,removeMarkup)
 
 /*function debounce(func, wait, immediate) {
   let timeout;

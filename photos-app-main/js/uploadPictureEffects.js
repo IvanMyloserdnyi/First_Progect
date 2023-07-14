@@ -141,7 +141,6 @@ function refreshImage(value) {
 }
 function getScale(evt) {
   let scaleValue = +scaleControlValue.value.substring(0,scaleControlValue.value.length-1);
-
   switch (true) {
     case scaleValue < scaleParameters.min||scaleValue>scaleParameters.max: return;
     case evt.target === scaleControlSmaller && scaleValue > scaleParameters.min:
@@ -158,5 +157,12 @@ function getScale(evt) {
       console.log('Scale Error');
       break;
   }
+}
+export function resetImageScale() {
+  const scaleControlValue = document.querySelector('.scale__control--value');
+  const image = document.querySelector('.img-upload__preview');
+  image.querySelector('img').src='img/upload-default-image.jpg'
+  image.style.transform = 'scale(1)'
+  scaleControlValue.value = '100%'
 }
 //При натисканні на кнопки .scale__control --smaller і .scale__control --bigger має змінюватися значення поля .scale__control --value;

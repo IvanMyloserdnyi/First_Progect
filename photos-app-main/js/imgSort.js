@@ -1,7 +1,7 @@
 import {getRandomNumber} from "./utils.js";
 
 
-export function imgFilters(publications,createPhotosMarkup,photoTemplate,picturesSection,photosFragment,removeMarkup) {
+export function imgSort(publications, createPhotosMarkup, photoTemplate, picturesSection, photosFragment, removeMarkup) {
   const imgFiltersSection = document.querySelector('.img-filters');
   const imgFilterDefault = document.querySelector('#filter-default');
   const imgFilterRandom = document.querySelector('#filter-random');
@@ -51,7 +51,8 @@ function getRandomPublications(publications) {
   return randomPublications
 }
 function getDiscussedPublications(publications) {
-  return publications.sort(function (a, b) {
+  const discussedPublications = JSON.parse(JSON.stringify(publications))
+  return discussedPublications.sort(function (a, b) {
     if (a.comments.length > b.comments.length) {
       return -1;
     }
