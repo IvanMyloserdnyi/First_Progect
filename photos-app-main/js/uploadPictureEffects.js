@@ -43,6 +43,11 @@ export function getPhotosEffects() {
   scaleSection.addEventListener('click', (evt) =>getScale(evt));
   effectsList.addEventListener('click',(evt) =>getFilters(evt))
 }
+export function resetPictureFilter() {
+  image.className = 'img-upload__preview';
+  createSlider('remove');
+  refreshImage()
+}
 function getFilters(evt) {
   console.log(evt.target.id)
   switch (true) {

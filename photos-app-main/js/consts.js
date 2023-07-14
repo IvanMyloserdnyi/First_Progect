@@ -37,3 +37,7 @@ export const hashTagsInput = document.querySelector('.text__hashtags');
 export const commentsLoader = document.querySelector('.social__comments-loader ');
 export  const commentsShown = document.querySelector('.comments-shown');
 
+export const imgUploadButton = document.querySelector('#upload-file');
+export const imgUploadSection = document.querySelector('.img-upload__overlay');
+export const formSubmitButton = document.querySelector('.img-upload__submit');
+
